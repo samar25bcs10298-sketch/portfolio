@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planet & Moon (CSS only)</title>
+  <style>
+
+    :root{
+      --planet-size: 180px;     
+      --moon-size: 36px;         
+      --orbit-size: 340px;   
+      --orbit-duration: 6s;    
+      --bg: radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.03), transparent 10%),
+            radial-gradient(ellipse at 80% 90%, rgba(255,255,255,0.02), transparent 15%),
+            #030417;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      display:grid;place-items:center;min-height:100vh;background:var(--bg);font-family:system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      color:#fff;overflow:hidden
+    }
+
+    .stars{position:absolute;inset:0;pointer-events:none;opacity:0.6;background-image:
+      radial-gradient(#ffffff 1px, transparent 1px),
+      radial-gradient(#ffffff 1px, transparent 1px),
+      radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 1200px 1200px, 800px 800px, 400px 400px;
+    background-position: 10% 20%, 70% 40%, 30% 80%;filter:blur(.4px)}
+
+    .scene{position:relative;width:var(--orbit-size);height:var(--orbit-size);display:grid;place-items:center}
+
+    .orbit{
+      position:absolute;inset:0;border-radius:50%;
+      display:block;transform-origin:50% 50%;
+      animation: orbit-rotate var(--orbit-duration) linear infinite;
+    }
+
+    .orbit::after{
+      content:"";position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;border-radius:50%;
+      border:1px dashed rgba(255,255,255,0.06); box-shadow:0 0 18px rgba(0,0,0,0.45);
+    }
+
+    .planet{
+      width:var(--planet-size);height:var(--planet-size);border-radius:50%;position:absolute;z-index:3;
+      background: radial-gradient(circle at 35% 25%, #ffd36b, #ff9e3b 30%, #b44a2a 70%);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,160,80,0.12) inset;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+    }
+
+    .planet::after{
+      content:"";position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), transparent 30%);
+      filter:blur(6px);opacity:0.85;z-index:1;
+    }
+
+    .moon{
+      width:var(--moon-size);height:var(--moon-size);border-radius:50%;position:absolute;z-index:2;
+      left:50%;top:0%;transform:translate(-50%, -50%);
+      background:linear-gradient(135deg,#e6e6e6,#bdbdbd);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset -6px -6px 12px rgba(0,0,0,0.08);
+    }
+
+
+    .moon-inner{display:block; width:100%; height:100%; border-radius:50%; animation: counter-rotate var(--orbit-duration) linear infinite}
+
+    .moon::before{
+      content:"";position:absolute;left:50%;top:50%;width:160%;height:160%;transform:translate(-50%,-50%) scaleY(.25);border-radius:50%;
+      background:radial-gradient(closest-side, rgba(0,0,0,0.18), transparent);
+      filter:blur(6px);z-index:-1;opacity:0.8
+    }
+
+    @keyframes orbit-rotate{to{transform:rotate(360deg)}}
+
+    @keyframes counter-rotate{to{transform:rotate(-360deg)}}
+
+    @media (max-width:520px){
+      :root{--orbit-size:260px;--planet-size:120px;--moon-size:28px}
+    }
+
+    .caption{position:fixed;left:1rem;bottom:1rem;color:#cfcfd1;font-size:13px;opacity:0.85}
+
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="scene" role="main" aria-label="Planet with moon orbiting">
+    <div class="orbit" aria-hidden="true">
+      <div class="moon" aria-hidden="true"><span class="moon-inner"></span></div>
+    </div>
+
+    <div class="planet" role="img" aria-label="A stylized planet">
+    </div>
+  </main>
+
+
+</body>
+</html>
